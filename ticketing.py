@@ -23,8 +23,16 @@ root.geometry('400x400')
 
 def update_label():
     ticket_info.set("")
-    for t in Times:
-        time_info.set(time_info.get() + t._times + "   $" + str(t._price) + "\n")
+    for t in tickets:
+        ticket_info.set(ticket_info.get() + t._times + "   $" + str(t._price) + "    " + str(t._capacity) + "\n")
+
+def edit():
+    for t in tickets:
+        if t._times == selected_ticket.get():
+            t._capacity -= number_tickets.get()
+    update_label()
+
+
 
 # set up the label
 ticket_info = StringVar()
@@ -35,10 +43,17 @@ ticket_lbl.grid(row=0, sticky=W)
 
 #  create the option menu
 selected_ticket = StringVar()
-selected_ticket.set(ticket_names[0])
+selected_ticket.set(ticket_lbl)
 # three parameters: location, selected item, list of all items
-selected_ticket = OptionMenu(root, selected_pizza, *pizza_names)
+selected_ticket = OptionMenu(root, selected_ticket, *ticket_times)
 selected_ticket.grid(row = 1)
+
+# entry for number of tickets
+number_tickets = IntVar()
+number_tickets = Entry(root, textvariable=number_tickets).grid(row=2, column=0)
+
+# confirm button
+edit_btn = Button(root, text="Confirm", command=edit).grid(row=3, column=0)
 
 
 update_label()
